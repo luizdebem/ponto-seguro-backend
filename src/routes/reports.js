@@ -2,41 +2,64 @@ const express = require('express');
 const router = express.Router();
 const Report = require('../models/Report');
 
-// @TODO @luizdebem - better response, error handling;
 // @TODO @luizdebem - soft delete
 
 router.get('/', async (req, res) => {
-  const reports = await Report.find();
-  res.json(reports);
+  try {
+    const reports = await Report.find();
+    res.status(200).json({ data: reports });
+  } catch (error) {
+    res.status(500).json({ error: 'Unknown error on Model.find()' });
+  }
 });
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
-  const report = await Report.findById(id);
-  res.json(report);
+
+  try {
+    const report = await Report.findById(id);
+    if (!report) return res.status(404).json(report);
+    res.status(200).json(report);
+  } catch (error) {
+    res.status(400).json({ error: 'Unable to find the report' });
+  }
 });
 
 router.post('/', async (req, res) => {
   const { geolocation, userID, details } = req.body;
-  const report = new Report({
-    geolocation,
-    userID,
-    details
-  });
-  const data = await report.save();
-  res.json(data);
+
+  try {
+    const report = new Report({
+      geolocation,
+      userID,
+      details
+    });
+    const data = await report.save();
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json(error);
+  }
 });
 
 router.patch('/:id', async (req, res) => {
   const { id } = req.params;
-  await Report.updateOne({ _id: id }, { $set: req.body });
-  res.json({});
+
+  try {
+    const report = await Report.updateOne({ _id: id }, { $set: req.body });
+    res.status(200).json({ message: 'Updated report' });
+  } catch (error) {
+    res.status(404).json({ error: 'Report not found' });
+  }
 });
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  await Report.remove({ _id: id });
-  res.json({});
+  try {
+    await Report.deleteOne({ _id: id });
+    res.status(200).json({ message: 'Deleted report' });
+  } catch (error) {
+    res.status(404).json({ error: 'Report not found' });
+  }
 });
 
 module.exports = router;
