@@ -9,12 +9,13 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  password: {
+    type: String,
+    required: true
+  },
   isAdmin: {
     type: Boolean,
     required: true
-  },
-  firebaseToken: {
-    type: String
   }
 }, { timestamps: true });
 
