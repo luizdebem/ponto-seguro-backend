@@ -2,9 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Report = require('../models/Report');
 
+const auth = require('../middlewares/auth');
+
 // @TODO @luizdebem - soft delete
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const reports = await Report.find();
     res.status(200).json({ data: reports });
@@ -13,7 +15,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -25,7 +27,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { geolocation, userID, details } = req.body;
 
   try {
@@ -41,7 +43,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', auth, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -52,7 +54,7 @@ router.patch('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   const { id } = req.params;
   try {
     await Report.deleteOne({ _id: id });

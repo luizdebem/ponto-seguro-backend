@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 
 // @TODO @luizdebem update, delete, retrieve, login e logout
 // @TODO @luizdebem validations
+// @TODO @luizdebem - JWT secret
 
 router.post('/signup', async (req, res) => {
   const { fullName, email, password, isAdmin } = req.body;
