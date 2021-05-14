@@ -16,11 +16,13 @@ app.get('/', (req, res) => {
   res.json({ uptime: process.uptime() });
 });
 
-mongoose.connect('mongodb://localhost/ponto-seguro', { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+const mongodbURI = `mongodb+srv://luizdebem:${process.env.MONGODB_PASSWORD}@pontoseguro.xlm7x.mongodb.net/PontoSeguro?retryWrites=true&w=majority`;
+
+mongoose.connect(mongodbURI, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
   console.log('Connected to DB');
 });
 
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at port ${port}`);
 });
