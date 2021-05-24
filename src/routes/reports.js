@@ -28,13 +28,16 @@ router.get('/:id', auth, async (req, res) => {
 });
 
 router.post('/', auth, async (req, res) => {
-  const { geolocation, userID, details } = req.body;
+  const { geolocation, userID, details, userType, reportType, when } = req.body;
 
   try {
     const report = new Report({
       geolocation,
       userID,
-      details
+      details,
+      userType,
+      reportType,
+      when
     });
     const data = await report.save();
     res.status(200).json(data);
