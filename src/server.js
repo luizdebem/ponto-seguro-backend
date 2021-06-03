@@ -14,6 +14,9 @@ app.use('/reports', reportsRoute);
 const usersRoute = require('./routes/users');
 app.use('/users', usersRoute);
 
+const businessesRoute = require('./routes/businesses');
+app.use('/businesses', businessesRoute);
+
 app.get('/', (req, res) => {
   res.json({ uptime: process.uptime() });
 });
